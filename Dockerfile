@@ -18,7 +18,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN mkdir -p /data /seed
 
 # Download Ubuntu Cloud Image to a secure internal template path
-RUN wget -q https://cloud-images.ubuntu.com/focal/current/focal-server-cloudimg-amd64.img -O /ubuntu-template.img
+RUN wget -q https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img -O /ubuntu-template.img
 
 # Cloud-init user-data config to set root credentials and change Hostname
 RUN bash -c 'cat > /seed/user-data' <<EOF
