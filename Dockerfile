@@ -62,6 +62,7 @@ echo "🚀 Initializing Ubuntu Virtual Machine boot sequence..."\n\
 qemu-system-x86_64 \\\n\
   -m "${VM_RAM}" \\\n\
   -smp "${VM_CORES}" \\\n\
+  -vga virtio \\\n\
   -drive file=/data/ubuntu.img,format=qcow2,if=virtio \\\n\
   -drive file=/data/seed.img,format=raw,if=virtio \\\n\
   -netdev user,id=net0,hostfwd=tcp::2026-:22 \\\n\
