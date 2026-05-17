@@ -2,7 +2,7 @@ FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Install system dependencies
+# Install system dependencies + sshpass tool to automate the password login
 RUN apt-get update && apt-get install -y --no-install-recommends \
     qemu-system-x86 \
     qemu-utils \
@@ -11,13 +11,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     unzip \
     net-tools \
     openssh-client \
+    sshpass \
     && rm -rf /var/lib/apt/lists/*
 
 # Create working directories
 RUN mkdir -p /data /seed
 
 # Download Ubuntu Cloud Image to a secure internal template path
-RUN wget -q https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img -O /ubuntu-template.img
+RUN wget -q https://cloud-images.ubuntu.com/focal/current/focal-server-cloudimg-amd64.img -O /ubuntu-template.img
 
 # Cloud-init user-data config to set root credentials and change Hostname
 RUN bash -c 'cat > /seed/user-data' <<EOF
@@ -44,11 +45,10 @@ RUN touch /seed/meta-data
 # Generate the seed image used by cloud-init
 RUN cloud-localds /data/seed.img /seed/user-data /seed/meta-data
 
-# Dynamic Startup Script with FULLY AUTOMATED Persistence Check
+# Dynamic Startup Script with AUTOMATED TERMINAL ATTACH
 RUN echo '#!/bin/bash\n\
 set -e\n\
 \n\
-# Set fallback defaults if runtime variables are missing\n\
 VM_RAM="${RAM:-2048}"\n\
 VM_CORES="${CORES:-2}"\n\
 VM_DISK_SIZE="${DISK_SIZE:-20G}"\n\
@@ -56,17 +56,17 @@ VM_DISK_SIZE="${DISK_SIZE:-20G}"\n\
 echo "⚙️ Configuring VM Resource Specifications..."\n\
 echo "   -> Allocation: RAM=${VM_RAM}MB | CPU Cores=${VM_CORES} | Virtual Disk=${VM_DISK_SIZE}"\n\
 \n\
-# 🔒 100% Automated Data Protection Check\n\
 if [ ! -f /data/ubuntu22.qcow2 ]; then\n\
     echo "🆕 Fresh container deployment: Provisioning permanent volume..."\n\
     cp /ubuntu-template.img /data/ubuntu22.qcow2\n\
     qemu-img resize /data/ubuntu22.qcow2 "${VM_DISK_SIZE}" > /dev/null\n\
 else\n\
-    echo "💾 Container restart detected: Loading your saved data and configurations safely!"\n\
+    echo "💾 Container restart detected: Loading your saved data safely!"\n\
 fi\n\
 \n\
-echo "🚀 Initializing Ubuntu Virtual Machine boot sequence..."\n\
+echo "🚀 Initializing Ubuntu Virtual Machine in background..."\n\
 \n\
+# Boot QEMU purely in background without blocking stdio/keyboard\n\
 qemu-system-x86_64 \\\n\
   -m "${VM_RAM}" \\\n\
   -smp "${VM_CORES}" \\\n\
@@ -76,15 +76,19 @@ qemu-system-x86_64 \\\n\
   -netdev user,id=net0,hostfwd=tcp::2026-:22 \\\n\
   -device virtio-net,netdev=net0 \\\n\
   -nographic \\\n\
-  -serial mon:stdio \\\n\
   -vnc :0 &\n\
 \n\
-sleep 5\n\
+echo "⏳ Waiting for network service initialization (10s)..."\n\
+sleep 10\n\
 \n\
 echo "========================================================================="\n\
-echo " ✅ VM is up and running successfully!"\n\
-echo " 🔐 Secure SSH Access  : ssh root@localhost -p 2026 (Password: root)"\n\
+echo " 🌐 Connecting you directly to WalksysDev Terminal..."\n\
 echo "========================================================================="\n\
+\n\
+# Automatically inject password and log you in inside the SAME main terminal\n\
+sshpass -p "root" ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null root@localhost -p 2026\n\
+\n\
+# Keep container alive if user exits the SSH session\n\
 tail -f /dev/null\n' > /start.sh && chmod +x /start.sh
 
 # Persistent storage volume inside the container layers
