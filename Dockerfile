@@ -2,7 +2,7 @@ FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Install system dependencies (Removed novnc and websockify)
+# Install system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     qemu-system-x86 \
     qemu-utils \
@@ -13,15 +13,18 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     openssh-client \
     && rm -rf /var/lib/apt/lists/*
 
-# Create working directories (Removed /novnc)
+# Create working directories
 RUN mkdir -p /data /seed
 
 # Download Ubuntu Cloud Image
 RUN wget -q https://cloud-images.ubuntu.com/focal/current/focal-server-cloudimg-amd64.img -O /data/ubuntu.img
 
-# Cloud-init user-data config to set root credentials
+# Cloud-init user-data config to set root credentials and custom Hostname
 RUN bash -c 'cat > /seed/user-data' <<EOF
 #cloud-config
+hostname: walksysdev
+prefer_fqdn_over_hostname: true
+
 users:
   - name: root
     plain_text_passwd: "root"
@@ -47,8 +50,6 @@ set -e\n\
 \n\
 # Set fallback defaults if runtime variables are missing\n\
 VM_RAM="${RAM:-2048}"\n\
-VM_CORES="${CORES:-2}"\n\
-VM_DISK_SIZE="${DISK_SIZE:-20G}"\n\
 \n\
 echo "⚙️ Configuring VM Resource Specifications..."\n\
 echo "   -> Allocation: RAM=${VM_RAM}MB | CPU Cores=${VM_CORES} | Virtual Disk=${VM_DISK_SIZE}"\n\
@@ -81,7 +82,7 @@ tail -f /dev/null\n' > /start.sh && chmod +x /start.sh
 # Persistent storage mount point
 VOLUME /data
 
-# SSH networking port (Removed 6080)
+# SSH networking port
 EXPOSE 2026
 
 CMD ["/start.sh"]
