@@ -44,7 +44,7 @@ docker run -it \
 ### 📦 Fallback Standard Mode (Defaults: 2GB RAM, 2 Cores, 20GB Disk)
 
 ```bash
-docker run -it -p 2026:2026 walksysdev/ubuntu-vm-kvm
+docker run -it -p 2026:2026 -e RAM=2048 -e CORES2 -e DISK_SIZE=20G walksysdev/ubuntu-vm-kvm
 
 ```
 
