@@ -18,7 +18,7 @@ Launch your virtual machine with custom hardware profiles directly from the comm
 ```bash
 docker run -it \
   -p 6080:6080 \
-  -p 2222:2222 \
+  -p 22:22 \
   -e RAM=1024 \
   -e CORES=1 \
   -e DISK_SIZE=15G \
@@ -31,7 +31,7 @@ docker run -it \
 ```bash
 docker run -it \
   -p 6080:6080 \
-  -p 2222:2222 \
+  -p 22:22 \
   -e RAM=4096 \
   -e CORES=4 \
   -e DISK_SIZE=40G \
@@ -42,7 +42,7 @@ docker run -it \
 ### 📦 Fallback Standard Mode (Defaults: 2GB RAM, 2 Cores, 20GB Disk)
 
 ```bash
-docker run -it -p 6080:6080 -p 2222:2222 walksysdev/ubuntu-vm-kvm
+docker run -it -p 6080:6080 -p 22:22 walksysdev/ubuntu-vm-kvm
 
 ```
 
@@ -53,7 +53,7 @@ docker run -it -p 6080:6080 -p 2222:2222 walksysdev/ubuntu-vm-kvm
 | Connection Type | Target Address / URL | Credentials (User/Pass) |
 | --- | --- | --- |
 | 🖥️ **Web Browser GUI** | [http://localhost:6080/vnc.html](http://localhost:6080/vnc.html) | *No Password Required* |
-| 🔐 **Secure SSH Terminal** | `ssh root@localhost -p 2222` | `root` / `root` |
+| 🔐 **Secure SSH Terminal** | `ssh root@localhost -p 22` | `root` / `root` |
 
 > 💡 **GitHub Codespaces Deployment:** Navigate to the **"Ports"** panel at the bottom of your workspace, look for port `6080`, and click the 🌍 **Open in Browser** option to access the graphical console securely.
 
