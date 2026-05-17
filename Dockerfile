@@ -49,7 +49,6 @@ COPY <<'EOF' /start.sh
 #!/bin/bash
 set -e
 
-# Map environment variables with fallback defaults
 VM_RAM="${RAM:-2048}"
 VM_CORES="${CORES:-2}"
 VM_DISK_SIZE="${DISK_SIZE:-10G}"
@@ -57,22 +56,26 @@ VM_DISK_SIZE="${DISK_SIZE:-10G}"
 echo "⚙️ Configuring VM Resource Specifications..."
 echo "   -> Allocation: RAM=${VM_RAM}MB | CPU Cores=${VM_CORES} | Virtual Disk=${VM_DISK_SIZE}"
 
-# Dynamically scale the virtual disk image partition
-qemu-img resize /data/vms.img "${VM_DISK_SIZE}" > /dev/null
+if [ ! -f /data/ubuntu.img ]; then
+  echo "❌ Missing VM disk image!"
+  exit 1
+fi
+
+qemu-img resize /data/ubuntu.img "${VM_DISK_SIZE}" >/dev/null
 
 echo "🚀 Initializing Ubuntu Virtual Machine boot sequence..."
 
-qemu-system-x86_64 \
+exec qemu-system-x86_64 \
   -m "${VM_RAM}" \
   -smp "${VM_CORES}" \
   -vga virtio \
-  -drive file=/data/vms.img,format=qcow2,if=virtio \
+  -drive file=/data/ubuntu.img,format=qcow2,if=virtio \
   -drive file=/data/seed.img,format=raw,if=virtio \
   -netdev user,id=net0,hostfwd=tcp::2026-:22 \
   -device virtio-net,netdev=net0 \
   -nographic \
   -serial mon:stdio \
-  -vnc :0 &
+  -vnc :0
 
 sleep 5
 
