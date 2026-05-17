@@ -18,14 +18,14 @@ A high-performance, dynamic **Ubuntu Virtual Machine (VM)** running seamlessly i
 
 Launch your virtual machine with custom hardware profiles directly from the command line using environment variables (`-e`):
 
-### 💻 Developer Profile (1GB RAM, 1 CPU Core, 15GB Disk)
+### 💻 Developer Profile (8GB RAM, 3 CPU Core, 30GB Disk)
 
 ```bash
 docker run -it \
   -p 2026:2026 \
-  -e RAM=1024 \
-  -e CORES=1 \
-  -e DISK_SIZE=15G \
+  -e RAM=7900 \
+  -e CORES=3 \
+  -e DISK_SIZE=30G \
   walksysdev/ubuntu-vm-kvm
 
 ```
