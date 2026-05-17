@@ -42,7 +42,7 @@ EOF
 RUN touch /seed/meta-data
 
 # Generate the seed image
-RUN cloud-localds /data/seed.img /seed/user-data /seed/meta-data
+RUN cloud-localds /data/vms.img /seed/user-data /seed/meta-data
 
 # Fixed startup script - copy from file instead of echo escaping
 COPY <<'EOF' /start.sh
@@ -58,7 +58,7 @@ echo "⚙️ Configuring VM Resource Specifications..."
 echo "   -> Allocation: RAM=${VM_RAM}MB | CPU Cores=${VM_CORES} | Virtual Disk=${VM_DISK_SIZE}"
 
 # Dynamically scale the virtual disk image partition
-qemu-img resize /data/ubuntu.img "${VM_DISK_SIZE}" > /dev/null
+qemu-img resize /data/vms.img "${VM_DISK_SIZE}" > /dev/null
 
 echo "🚀 Initializing Ubuntu Virtual Machine boot sequence..."
 
@@ -66,7 +66,7 @@ qemu-system-x86_64 \
   -m "${VM_RAM}" \
   -smp "${VM_CORES}" \
   -vga virtio \
-  -drive file=/data/ubuntu.img,format=qcow2,if=virtio \
+  -drive file=/data/vms.img,format=qcow2,if=virtio \
   -drive file=/data/seed.img,format=raw,if=virtio \
   -netdev user,id=net0,hostfwd=tcp::2026-:22 \
   -device virtio-net,netdev=net0 \
