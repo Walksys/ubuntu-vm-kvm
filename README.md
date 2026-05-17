@@ -70,13 +70,6 @@ docker build --build-arg BASE_IMAGE=ubuntu:22.04 -t walksysdev/ubuntu-vm-kvm .
 
 ```
 
-### Build for Debian 12 (Bookworm) Base
-
-```bash
-docker build --build-arg BASE_IMAGE=debian:bookworm -t walksysdev/ubuntu-vm-kvm .
-
-```
-
 ---
 
-*Maintained with 💻 by [@walksysdev](https://www.google.com/search?q=https://hub.docker.com/r/walksysdev).*
+*Maintained with 💻 by [@walksysdev](https://hub.docker.com/r/walksysdev).*
