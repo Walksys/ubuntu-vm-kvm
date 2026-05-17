@@ -9,6 +9,12 @@ A high-performance, dynamic **Ubuntu Virtual Machine (VM)** running seamlessly i
 * ⚙️ **Dynamic Resource Allocation:** Adjust RAM, CPU, and Storage limits on-the-fly during boot execution.
 * 🔐 **Cloud-Init Ready:** Pre-configured root credentials and SSH access infrastructure out of the box.
 
+## 🔐 Quick Access Credentials
+
+Default Username: root
+Default Password: root
+Root Access: root / root
+
 ## 🚀 Usage & Deployment Profiles
 
 Launch your virtual machine with custom hardware profiles directly from the command line using environment variables (`-e`):
