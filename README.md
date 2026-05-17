@@ -5,7 +5,6 @@ A high-performance, dynamic **Ubuntu Virtual Machine (VM)** running seamlessly i
 ## ⚡ Key Features
 
 * 🌍 **Universal Base:** Multi-OS compatibility layer supporting Ubuntu 22.04, 24.04, and Debian bases via Build Arguments.
-* 🖥️ **Web GUI Access:** Built-in HTML5 noVNC client for clientless desktop access via any browser.
 * ⚙️ **Dynamic Resource Allocation:** Adjust RAM, CPU, and Storage limits on-the-fly during boot execution.
 * 🔐 **Cloud-Init Ready:** Pre-configured root credentials and SSH access infrastructure out of the box.
 
