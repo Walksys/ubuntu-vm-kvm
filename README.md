@@ -21,6 +21,8 @@ Launch your virtual machine with custom hardware profiles directly from the comm
 
 ```bash
 docker run -it \
+. --privileged \
+  --device /dev/kvm \
   -p 2026:2026 \
   -e RAM=7900 \
   -e CORES=3 \
@@ -33,6 +35,8 @@ docker run -it \
 
 ```bash
 docker run -it \
+  --privileged \
+  --device /dev/kvm \
   -p 2026:2026 \
   -e RAM=4096 \
   -e CORES=4 \
@@ -44,7 +48,7 @@ docker run -it \
 ### 📦 Fallback Standard Mode (Defaults: 2GB RAM, 2 Cores, 20GB Disk)
 
 ```bash
-docker run -it -p 2026:2026 -e RAM=2048 -e CORES2 -e DISK_SIZE=20G walksysdev/ubuntu-vm-kvm
+docker run -it --privileged  --device /dev/kvm -p 2026:2026 -e RAM=2048 -e CORES2 -e DISK_SIZE=20G walksysdev/ubuntu-vm-kvm
 
 ```
 
