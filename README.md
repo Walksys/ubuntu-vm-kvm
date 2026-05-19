@@ -21,7 +21,7 @@ Launch your virtual machine with custom hardware profiles directly from the comm
 
 ```bash
 docker run -it \
-. --privileged \
+  --privileged \
   --device /dev/kvm \
   -p 2026:2026 \
   -e RAM=7900 \
