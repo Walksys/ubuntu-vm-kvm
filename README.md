@@ -23,6 +23,7 @@ Launch your virtual machine with custom hardware profiles directly from the comm
 docker run -it \
   --privileged \
   --device /dev/kvm \
+  -p 6080 6080 \
   -p 2026:2026 \
   -e RAM=7900 \
   -e CORES=3 \
@@ -37,6 +38,7 @@ docker run -it \
 docker run -it \
   --privileged \
   --device /dev/kvm \
+  -p 6080:6080 \
   -p 2026:2026 \
   -e RAM=4096 \
   -e CORES=4 \
