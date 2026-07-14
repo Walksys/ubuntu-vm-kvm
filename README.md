@@ -29,7 +29,6 @@ docker run -it \
   -e CORES=3 \
   -e DISK_SIZE=30G \
   walksysdev/ubuntu-vm-kvm
-
 ```
 
 ### ⚡ Heavy Workload Profile (4GB RAM, 4 CPU Cores, 40GB Disk)
@@ -44,14 +43,12 @@ docker run -it \
   -e CORES=4 \
   -e DISK_SIZE=40G \
   walksysdev/ubuntu-vm-kvm
-
 ```
 
 ### 📦 Fallback Standard Mode (Defaults: 2GB RAM, 2 Cores, 20GB Disk)
 
 ```bash
 docker run -it --privileged  --device /dev/kvm -p 2026:2026 -e RAM=2048 -e CORES2 -e DISK_SIZE=20G walksysdev/ubuntu-vm-kvm
-
 ```
 
 ---
@@ -74,14 +71,12 @@ If you want to pull down the source configurations or compile the container manu
 
 ```bash
 docker pull walksysdev/ubuntu-vm-kvm:latest
-
 ```
 
 ### Manual Compilation Pipeline
 
 ```bash
 docker build -t walksysdev/ubuntu-vm-kvm .
-
 ```
 
 *Maintained with 💻 by [@walksysdev](https://hub.docker.com/r/walksysdev).*
